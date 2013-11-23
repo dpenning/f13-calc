@@ -8,7 +8,7 @@ void yyerror(char *);
 %%
 
 [a-z]       { 
-        yylval.sIndex = *yytext - 'a';
+        yylval.sIndex = yytext;
         return VARIABLE;
       }
 

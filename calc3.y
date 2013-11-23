@@ -18,11 +18,13 @@ int sym[26];                    /* symbol table */
 
 %union {
   int iValue;                 /* integer value */
-  char sIndex;                /* symbol table index */
+  float fValue;
+  char *sIndex;                /* symbol table index */
   nodeType *nPtr;             /* node pointer */
 };
 
 %token <iValue> INTEGER
+%token <fValue> FLOAT
 %token <sIndex> VARIABLE
 %token WHILE IF PRINT
 %nonassoc IFX
