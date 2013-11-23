@@ -69,8 +69,9 @@ void exNode
   strcpy (word, "???"); /* should never appear */
   s = word;
   switch(p->type) {
-    case typeCon: sprintf (word, "c(%d)", p->con.value); break;
-    case typeId:  sprintf (word, "id(%s)", p->id.s); break;
+    case typeCon:   sprintf (word, "c(%d)", p->con.value); break;
+    case typeId:    sprintf (word, "id(%s)", p->id.s); break;
+    case typeFloat: sprintf (word, "fl(%f)", p->fl.value); break;
     case typeOpr:
       switch(p->opr.oper){
         case WHILE:     s = "while"; break;
