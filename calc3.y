@@ -6,7 +6,7 @@
 
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
-nodeType *id(int i);
+ nodeType *id(char* s);
 nodeType *con(int value);
 void freeNode(nodeType *p);
 int ex(nodeType *p);
@@ -99,7 +99,7 @@ nodeType *con(int value) {
   return p;
 }
 
-nodeType *id(int i) {
+nodeType *id(char* s) {
   nodeType *p;
   size_t nodeSize;
 
@@ -110,7 +110,7 @@ nodeType *id(int i) {
 
   /* copy information */
   p->type = typeId;
-  p->id.s = (char)i;
+  p->id.s = s;
 
   return p;
 }
