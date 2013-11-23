@@ -8,23 +8,23 @@ void yyerror(char *);
 %%
 
 [a-z]       { 
-                yylval.sIndex = *yytext - 'a';
-                return VARIABLE;
-            }
+        yylval.sIndex = *yytext - 'a';
+        return VARIABLE;
+      }
 
 0           {
-                yylval.iValue = atoi(yytext);
-                return INTEGER;
-            }
+        yylval.iValue = atoi(yytext);
+        return INTEGER;
+      }
 
 [1-9][0-9]* {
-                yylval.iValue = atoi(yytext);
-                return INTEGER;
-            }
+        yylval.iValue = atoi(yytext);
+        return INTEGER;
+      }
 
 [-()<>=+*/;{}.] {
-                return *yytext;
-             }
+        return *yytext;
+       }
 
 ">="            return GE;
 "<="            return LE;
@@ -40,5 +40,5 @@ void yyerror(char *);
 .               yyerror("Unknown character");
 %%
 int yywrap(void) {
-    return 1;
+  return 1;
 }
