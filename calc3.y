@@ -110,7 +110,7 @@ nodeType *id(int i) {
 
     /* copy information */
     p->type = typeId;
-    p->id.i = i;
+    p->id.s = (char)i;
 
     return p;
 }
