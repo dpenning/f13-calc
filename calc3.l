@@ -7,10 +7,30 @@ void yyerror(char *);
 
 %%
 
-[a-z]       { 
+">="           { return GE; }
+"<="           { return LE; }
+"=="           { return EQ; }
+"!="           { return NE; }
+"while"        { return WHILE; }
+"if"           { return IF; }
+"else"         { return ELSE; }
+"print"        { return PRINT; }
+"int"          { return INTD; }
+"float"        { return FLOATD; }
+
+[-()<>=+*/;{}.] {
+        return *yytext;
+       }
+
+[a-zA-z_][a-zA-z_0=9]*       { 
         yylval.sIndex = yytext;
         return VARIABLE;
       }
+
+[0-9]*[.][0-9]* {
+yylval.fValue = atof(yytext);
+return FLOAT;
+}
 
 0           {
         yylval.iValue = atoi(yytext);
@@ -22,18 +42,6 @@ void yyerror(char *);
         return INTEGER;
       }
 
-[-()<>=+*/;{}.] {
-        return *yytext;
-       }
-
-">="            return GE;
-"<="            return LE;
-"=="            return EQ;
-"!="            return NE;
-"while"         return WHILE;
-"if"            return IF;
-"else"          return ELSE;
-"print"         return PRINT;
 
 [ \t\n]+        ;       /* ignore whitespace */
 
