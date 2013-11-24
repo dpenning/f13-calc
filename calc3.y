@@ -27,7 +27,7 @@ int sym[26];                    /* symbol table */
 %token <iValue> INTEGER
 %token <fValue> FLOAT
 %token <sIndex> VARIABLE
-%token WHILE IF PRINT DO UNTIL
+%token WHILE IF PRINT DO UNTIL INTD FLOATD
 %nonassoc IFX
 %nonassoc ELSE
 
@@ -36,7 +36,7 @@ int sym[26];                    /* symbol table */
 %left '*' '/'
 %nonassoc UMINUS
 
-%type <nPtr> stmt expr stmt_list
+%type <nPtr> stmt expr stmt_list decl
 
 %%
 
@@ -53,6 +53,8 @@ stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
+    | decl VARIABLE ';'              { $$ = id($2); }
+    | decl VARIABLE '=' expr ';'     { $$ = opr('=', 2, id($2), $4); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
     | DO '{' stmt '}' WHILE '(' expr ')' ';' { }
@@ -84,6 +86,10 @@ expr:
     | expr EQ expr          { $$ = opr(EQ, 2, $1, $3); }
     | '(' expr ')'          { $$ = $2; }
     ;
+
+decl:
+      INTD                  {}
+    | FLOATD                {}
 
 %%
 
