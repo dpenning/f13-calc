@@ -8,6 +8,7 @@
 nodeType *opr(int oper, int nops, ...);
  nodeType *id(char* s);
 nodeType *con(int value);
+nodeType *conf(float value);
 void freeNode(nodeType *p);
 int ex(nodeType *p);
 int yylex(void);
@@ -26,7 +27,7 @@ int sym[26];                    /* symbol table */
 %token <iValue> INTEGER
 %token <fValue> FLOAT
 %token <sIndex> VARIABLE
-%token WHILE IF PRINT
+%token WHILE IF PRINT DO UNTIL
 %nonassoc IFX
 %nonassoc ELSE
 
@@ -54,6 +55,8 @@ stmt:
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
+    | DO '{' stmt '}' WHILE '(' expr ')' ';' { }
+    | DO '{' stmt '}' UNTIL '(' expr ')' ';' { }
     | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, 2, $3, $5); }
     | IF '(' expr ')' stmt ELSE stmt { $$ = opr(IF, 3, $3, $5, $7); }
     | '{' stmt_list '}'              { $$ = $2; }
@@ -66,6 +69,7 @@ stmt_list:
 
 expr:
       INTEGER               { $$ = con($1); }
+    | FLOAT                 { $$ = conf($1); }
     | VARIABLE              { $$ = id($1); }
     | '-' expr %prec UMINUS { $$ = opr(UMINUS, 1, $2); }
     | expr '+' expr         { $$ = opr('+', 2, $1, $3); }
@@ -97,6 +101,22 @@ nodeType *con(int value) {
   /* copy information */
   p->type = typeCon;
   p->con.value = value;
+
+  return p;
+}
+
+nodeType *conf(float value) {
+  nodeType *p;
+  size_t nodeSize;
+
+  /* allocate node */
+  nodeSize = SIZEOF_NODETYPE + sizeof(floatNodeType);
+  if ((p = malloc(nodeSize)) == NULL)
+    yyerror("out of memory");
+
+  /* copy information */
+  p->type = typeFloat;
+  p->fl.value = value;
 
   return p;
 }

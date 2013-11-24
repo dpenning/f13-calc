@@ -17,6 +17,8 @@ void yyerror(char *);
 "print"        { return PRINT; }
 "int"          { return INTD; }
 "float"        { return FLOATD; }
+"do"           { return DO; }
+"until"        { return UNTIL; }
 
 [-()<>=+*/;{}.] {
         return *yytext;
