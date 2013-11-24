@@ -29,11 +29,6 @@ void yyerror(char *);
         return VARIABLE;
       }
 
-[0-9]*[.][0-9]* {
-yylval.fValue = atof(yytext);
-return FLOAT;
-}
-
 0           {
         yylval.iValue = atoi(yytext);
         return INTEGER;
@@ -44,6 +39,10 @@ return FLOAT;
         return INTEGER;
       }
 
+[0-9]*[.][0-9]* {
+yylval.fValue = atof(yytext);
+return FLOAT;
+}
 
 [ \t\n]+        ;       /* ignore whitespace */
 
