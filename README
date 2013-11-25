@@ -1,0 +1,12 @@
+CS 441 Compilers
+Nov 25, 2013
+Milestone 1
+
+Michael Roup and David Pennington
+"Hall & Oates"
+
+To build just run make:
+
+$ make
+
+This outputs the program f13-calc
