@@ -54,16 +54,8 @@ stmt:
     | expr ';'                       { $$ = $1; }
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | decl VARIABLE ';'              { $$ = id($2); }
-
-    // [TODO] - Change this back to just the function below
-    //decl VARIABLE '=' expr ';'     { $$ = opr('=', 2, id($2), $4); }
-
-    | decl VARIABLE '=' expr ';'     { printf("Variable Name = %s\n",$2);$$ = opr('=', 2, id($2), $4); }
-    
-    // [TODO] - Change this back to just the function below
-    //VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
-    | VARIABLE '=' expr ';'          { printf("Variable Name = %s\n",$1);$$ = opr('=', 2, id($1), $3); }
-    
+    | decl VARIABLE '=' expr ';'     { $$ = opr('=', 2, id($2), $4); }
+    | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
     | DO '{' stmt '}' WHILE '(' expr ')' ';' { }
     | REPEAT '{' stmt '}' UNTIL '(' expr ')' ';' { }
