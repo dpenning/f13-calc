@@ -21,31 +21,37 @@ void yyerror(char *);
 "until"        { return UNTIL; }
 "repeat"       { return REPEAT; }
 
-[-()<>=+*/;{}.] {
-        return *yytext;
-       }
+[ \t\n]+        {printf("Whitespace\n");}       /* ignore whitespace */
 
-[a-zA-z_][a-zA-z_0=9]*       { 
-        yylval.sIndex = yytext;
+[a-zA-Z_][a-zA-Z_0-9]*       { 
+        char x[] = "WOW";
+        printf("Variable\n");
+        yylval.sIndex = x;
+        printf("size of yytext - %lu \n",sizeof(*yytext));
         return VARIABLE;
       }
-
 0           {
+        printf("Integer\n");
         yylval.iValue = atoi(yytext);
         return INTEGER;
       }
 
 [1-9][0-9]* {
+        printf("Integer\n");
         yylval.iValue = atoi(yytext);
         return INTEGER;
       }
 
 [0-9]*[.][0-9]* {
-yylval.fValue = atof(yytext);
-return FLOAT;
+        printf("Float\n");
+        yylval.fValue = atof(yytext);
+        return FLOAT;
 }
 
-[ \t\n]+        ;       /* ignore whitespace */
+[-()<>=+*;/{}.] {
+        printf("Text\n");
+        return *yytext;
+       }
 
 .               yyerror("Unknown character");
 %%
