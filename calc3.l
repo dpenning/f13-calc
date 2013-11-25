@@ -19,6 +19,7 @@ void yyerror(char *);
 "float"        { return FLOATD; }
 "do"           { return DO; }
 "until"        { return UNTIL; }
+"repeat"       { return REPEAT; }
 
 [-()<>=+*/;{}.] {
         return *yytext;
