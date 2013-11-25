@@ -23,10 +23,12 @@ void yyerror(char *);
 
 [ \t\n]+        {printf("Whitespace\n");}       /* ignore whitespace */
 
-[a-zA-Z_][a-zA-Z_0-9]*       { 
-        char x[] = "WOW";
+[a-zA-Z_][a-zA-Z_0-9]*       {
+        char *copy;
         printf("Variable\n");
-        yylval.sIndex = x;
+        copy = strdup(yytext);
+        yylval.sIndex = copy;
+        printf("text of yytext - %s \n",yytext);
         printf("size of yytext - %lu \n",sizeof(*yytext));
         return VARIABLE;
       }
