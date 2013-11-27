@@ -12,8 +12,11 @@ int ex(nodeType *p) {
   case typeCon:       
     printf("\tpush\t%d\n", p->con.value); 
     break;
+  case typeFloat:
+    printf("\tpush\t%f\n", p->fl.value);
+    break;
   case typeId:        
-    printf("\tpush\t%c\n", p->id.i + 'a'); 
+    printf("\tpush\t%s\n", p->id.s); 
     break;
   case typeOpr:
     switch(p->opr.oper) {
@@ -48,7 +51,7 @@ int ex(nodeType *p) {
       break;
     case '=':       
       ex(p->opr.op[1]);
-      printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+      printf("\tpop\t%s\n", p->opr.op[0]->id.s);
       break;
     case UMINUS:    
       ex(p->opr.op[0]);
