@@ -89,25 +89,25 @@ expr:
 
 decl:
       INTD VARIABLE ';' {
-        struct symbol_entry* se;
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
         addSymbol(se, line);
       }
       | FLOATD VARIABLE ';' {
-        struct symbol_entry* se;
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
         addSymbol(se, line);
       }
       | INTD VARIABLE '=' expr ';' {
-        struct symbol_entry* se;
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
         addSymbol(se, line);
       }
       | FLOATD VARIABLE '=' expr ';' {
-        struct symbol_entry* se;
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
         addSymbol(se, line);
