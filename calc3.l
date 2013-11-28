@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "calc3.h"
 #include "y.tab.h"
+#include "symbol_table.h"
 void yyerror(char *);
 %}
 
@@ -44,9 +45,24 @@ void yyerror(char *);
         return FLOAT;
 }
 
-[-()<>=+*;/{}.] {
+[-()<>=+*/.] {
         return *yytext;
        }
+";" {
+line++;
+return *yytext;
+}
+
+"{" {
+pushSymbolTable(); /*beginning of new scope*/
+return *yytext;
+}
+
+"}" {
+popSymbolTable(); /*end of scope*/
+return *yytext;
+}
+
 
 .               yyerror("Unknown character");
 %%

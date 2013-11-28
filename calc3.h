@@ -1,3 +1,6 @@
+/*Line number for symtable error messages*/
+int line;
+
 typedef enum { typeCon, typeFloat, typeId, typeOpr } nodeEnum; /* added */
 
 /* constants */

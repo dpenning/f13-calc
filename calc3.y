@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "calc3.h"
+#include "symbol_table.h"
 
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
@@ -52,9 +53,8 @@ function:
 stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
+    | decl                           {}
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
-    | decl VARIABLE ';'              { $$ = id($2); }
-    | decl VARIABLE '=' expr ';'     { $$ = opr('=', 2, id($2), $4); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
     | DO '{' stmt '}' WHILE '(' expr ')' ';' { $$ = opr(DO, 2, $3, $7); }
@@ -88,8 +88,31 @@ expr:
     ;
 
 decl:
-      INTD                  {}
-    | FLOATD                {}
+      INTD VARIABLE ';' {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = id($2);
+        se->name = $$->id.s;
+        addSymbol(se, line);
+      }
+      | FLOATD VARIABLE ';' {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = id($2);
+        se->name = $$->id.s;
+        addSymbol(se, line);
+      }
+      | INTD VARIABLE '=' expr ';' {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = opr('=', 2, id($2), $4);
+        se->name = id($2)->id.s;
+        addSymbol(se, line);
+      }
+      | FLOATD VARIABLE '=' expr ';' {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = opr('=', 2, id($2), $4);
+        se->name = id($2)->id.s;
+        addSymbol(se, line);
+      }
+
 
 %%
 
@@ -182,6 +205,8 @@ void yyerror(char *s) {
 }
 
 int main(void) {
+  line = 1;
+  pushSymbolTable();
   yyparse();
   return 0;
 }
