@@ -75,6 +75,8 @@ void exNode
     case typeOpr:
       switch(p->opr.oper){
         case WHILE:     s = "while"; break;
+        case DO:        s = "do"; break;
+        case REPEAT:    s = "repeat"; break;
         case IF:        s = "if";    break;
         case PRINT:     s = "print"; break;
         case ';':       s = "[;]";     break;

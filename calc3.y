@@ -57,8 +57,8 @@ stmt:
     | decl VARIABLE '=' expr ';'     { $$ = opr('=', 2, id($2), $4); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }
-    | DO '{' stmt '}' WHILE '(' expr ')' ';' { }
-    | REPEAT '{' stmt '}' UNTIL '(' expr ')' ';' { }
+    | DO '{' stmt '}' WHILE '(' expr ')' ';' { $$ = opr(DO, 2, $3, $7); }
+    | REPEAT '{' stmt '}' UNTIL '(' expr ')' ';' { $$ = opr(REPEAT, 2, $3, $7); }
     | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, 2, $3, $5); }
     | IF '(' expr ')' stmt ELSE stmt { $$ = opr(IF, 3, $3, $5, $7); }
     | '{' stmt_list '}'              { $$ = $2; }
