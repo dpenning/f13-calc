@@ -227,10 +227,9 @@ getSymbolEntry (const char *yytext)
   }
 
   //If variable not found, print error and exit
-  /* removed jwj
+  //  removed jwj
   cerr << "Variable " << yytext << " not declared." << endl;
   exit (1);
-  */
   return 0;
 }
 
