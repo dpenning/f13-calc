@@ -21,5 +21,8 @@ lex.yy.o : lex.yy.c y.tab.c calc3.h
 symbol_table.o : symbol_table.cc symbol_table.h calc3.h
 	$(GPP) -c symbol_table.cc
 
+check-syntax:
+	gcc -o nul -S ${CHK_SOURCES}
+
 clean:
 	-rm -f $(OBJECTS) lex.yy.c y.tab.c y.tab.h calc3g.o calc3a.o calc3b.o
