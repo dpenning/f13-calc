@@ -45,7 +45,15 @@ void yyerror(char *);
         return FLOAT;
 }
 
-[-()<>=+*/.] {
+"//".* {
+
+}
+
+"/*".*"*/" {
+
+}
+
+[-()<>=+/.*] {
         return *yytext;
        }
 ";" {
