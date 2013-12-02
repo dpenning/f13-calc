@@ -1,6 +1,9 @@
 GCC = gcc
 GPP = g++
 OBJECTS = lex.yy.o y.tab.o symbol_table.o
+LEX_OTHER_FILES = lex.yy.c y.tab.c y.tab.h
+CALC_OBJECTS = calc3g.o calc3a.o calc3b.o
+CALC_RUN = f13-calc-a f13-calc-b f13-calc-g
 
 f13-calc-a : $(OBJECTS) calc3.h calc3a.o calc3b.o calc3g.o
 	$(GPP) $(OBJECTS) calc3a.o -o f13-calc-a
@@ -22,4 +25,6 @@ symbol_table.o : symbol_table.cc symbol_table.h calc3.h
 	$(GPP) -c symbol_table.cc
 
 clean:
-	-rm -f $(OBJECTS) lex.yy.c y.tab.c y.tab.h calc3g.o calc3a.o calc3b.o
+	-rm -f $(OBJECTS) $(LEX_OTHER_FILES) $(CALC_OBJECTS)
+clean-all:
+	-rm -f $(OBJECTS) $(LEX_OTHER_FILES) $(CALC_OBJECTS) $(CALC_RUN)
