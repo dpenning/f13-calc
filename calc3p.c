@@ -67,9 +67,11 @@ int ex(nodeType *p) {
       ex(p->opr.op[0]);
       printf("%04d I_WRITE words:1", lbl++);
       break;
-    case '=':       
+    case '=':
+      /*This should be changed later to handle
+       more than one assignment at a time.*/
       ex(p->opr.op[1]);
-      printf("");
+      printf("%04d I_ASSIGN words:%d", lbl++, 1);
       break;
     case UMINUS:    
       ex(p->opr.op[0]);
@@ -85,10 +87,18 @@ int ex(nodeType *p) {
       case '/':   printf("%04d I_DIVIDE", lbl++); break;
       case '<':   printf("%04d I_LESS", lbl++); break;
       case '>':   printf("%04d I_GREATER", lbl++); break;
-      case GE:    printf("%04d ", lbl++); break;
-      case LE:    printf("%04d ", lbl++); break;
-      case NE:    printf("%04d ", lbl++); break;
       case EQ:    printf("%04d I_EQUAL", lbl++); break;
+      case NE:
+        printf("%04d I_EQUAL", lbl++);
+        printf("%04d I_CONSTANT value:0", lbl++);
+        printf("%04d I_EQUAL", lbl++);
+        break;
+      case GE:
+        printf("%04d ", lbl++);
+        break;
+      case LE:
+        printf("%04d ", lbl++);
+        break;
       }
     }
   }
