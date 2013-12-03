@@ -92,24 +92,32 @@ decl:
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
+        se->type = TYPE_INT;
+        se->size = 1;
         addSymbol(se, line);
       }
       | FLOATD VARIABLE ';' {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
+        se->type = TYPE_FLOAT;
+        se->size = 1;
         addSymbol(se, line);
       }
       | INTD VARIABLE '=' expr ';' {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
+        se->type = TYPE_INT;
+        se->size = 1;
         addSymbol(se, line);
       }
       | FLOATD VARIABLE '=' expr ';' {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
+        se->type = TYPE_FLOAT;
+        se->size = 1;
         addSymbol(se, line);
       }
 
