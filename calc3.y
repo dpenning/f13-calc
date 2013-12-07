@@ -28,7 +28,8 @@ int sym[26];                    /* symbol table */
 %token <iValue> INTEGER
 %token <fValue> FLOAT
 %token <sIndex> VARIABLE
-%token WHILE IF PRINT DO UNTIL INTD FLOATD REPEAT
+%token WHILE IF PRINT DO UNTIL REPEAT
+%token INTD FLOATD BEG END
 %nonassoc IFX
 %nonassoc ELSE
 
@@ -54,6 +55,7 @@ stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
     | decl                           {}
+    | BEG stmt_list END            {}
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
     | WHILE '(' expr ')' stmt        { $$ = opr(WHILE, 2, $3, $5); }

@@ -21,6 +21,8 @@ void yyerror(char *);
 "do"           { return DO; }
 "until"        { return UNTIL; }
 "repeat"       { return REPEAT; }
+"begin"        { return BEG; }
+"end"          { return END; }
 
 [ \t\n]+        ;       /* ignore whitespace */
 
