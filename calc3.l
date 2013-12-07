@@ -8,21 +8,26 @@ void yyerror(char *);
 
 %%
 
-">="           { return GE; }
-"<="           { return LE; }
-"=="           { return EQ; }
-"!="           { return NE; }
-"while"        { return WHILE; }
-"if"           { return IF; }
-"else"         { return ELSE; }
-"print"        { return PRINT; }
-"int"          { return INTD; }
+">="           { return GE;     }
+"<="           { return LE;     }
+"=="           { return EQ;     }
+"!="           { return NE;     }
+"while"        { return WHILE;  }
+"if"           { return IF;     }
+"else"         { return ELSE;   }
+"print"        { return PRINT;  }
+"int"          { return INTD;   }
 "float"        { return FLOATD; }
-"do"           { return DO; }
-"until"        { return UNTIL; }
+"do"           { return DO;     }
+"until"        { return UNTIL;  }
 "repeat"       { return REPEAT; }
-"begin"        { return BEG; }
-"end"          { return END; }
+
+"begin"        { pushSymbolTable(); /*beginning of new scope*/
+                 return BEG;
+               }
+"end"          { popSymbolTable(); /*end of scope*/
+                 return END;
+               }
 
 [ \t\n]+        ;       /* ignore whitespace */
 
@@ -55,24 +60,14 @@ void yyerror(char *);
 
 }
 
-[-()<>=+/.*] {
+[-()<>=+/.*{}] {
         return *yytext;
        }
+
 ";" {
-line++;
-return *yytext;
-}
-
-"{" {
-pushSymbolTable(); /*beginning of new scope*/
-return *yytext;
-}
-
-"}" {
-popSymbolTable(); /*end of scope*/
-return *yytext;
-}
-
+        line++;
+        return *yytext;
+    }
 
 .               yyerror("Unknown character");
 %%
