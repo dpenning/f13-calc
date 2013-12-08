@@ -5,6 +5,7 @@ lex.yy.c
 y.tab.c
 y.tab.h
 f13-calc*
+a.out
 
 api
 apd
