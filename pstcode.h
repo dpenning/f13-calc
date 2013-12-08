@@ -1,7 +1,3 @@
-
-
-// Hey emacs!  This is a -*- C++ -*- header file!
-
 /*
  * PROJECT         : CS 441,JWJ CS UK
  * FILE NAME       : pstcode.h
@@ -24,9 +20,6 @@
 #ifndef _PSTCODE_H_INCLUDED
 #define _PSTCODE_H_INCLUDED
 
-#include <string>
-#include <list>
-#include <vector>
 #include "pstack/apm.h"
 
 // Temporaries used by Code::add_*()
@@ -34,53 +27,54 @@
 #define ADDR_TEMP2 (STORAGE - 2)
 #define ADDR_TEMP3 (STORAGE - 3)
 
-class PstackCode
-{
-  public:
-  PstackCode();
-  virtual ~PstackCode();
-
-  // Add an instruction or (non-relocatable) operand
-  virtual void add(int op);
-// Add a real operand
-  virtual void add(float op);
-
-  // Generate code to duplicate the top element of the stack.
-  virtual void add_dup();
-
-  // Generate code to duplicate the top two elements of the stack.
-  virtual void add_2dup();
-
-  // Generate code to copy the 3rd element on the stack to the topa
-  virtual void add_3pick();
-
-  // Generate code to begin a program
-  virtual void begin_prog();
-
-  // Generate code to end a program
-  // virtual void end_prog();  removed jwj
-  virtual void end_prog(int); // added jwj
-
-    // Generate code to start a process block
-    virtual void begin_proc();
-
-    // Generate code to end a process block
-    virtual void end_proc(int patch_loc, int varsize);
-
-  // Write the code to a file.
-  virtual bool write(const std::string &file, bool binary) const;
-
-  // Return the current position.
-  virtual int pos(void) const;
-
-  // Return a reference to the instruction at the specified position.
-  virtual int at(int p) const;
-  virtual int &at(int p);
-  // Return a reference to a float stored at the specified position.
-  virtual float f_at(int p) const;
-  virtual float &f_at(int p);
-  private:
-  std::vector<WORD> code;
+struct code {
+  WORD data;
+  struct code* next;
 };
 
-#endif // _PSTCODE_H_INCLUDED
+struct code* first;
+struct code* last;
+
+// Add an instruction or (non-relocatable) operand
+void add_int(int op);
+
+// Add a real operand
+void add_float(float op);
+
+// Generate code to duplicate the top element of the stack.
+void add_dup();
+
+// Generate code to duplicate the top two elements of the stack.
+void add_2dup();
+
+// Generate code to copy the 3rd element on the stack to the topa
+void add_3pick();
+
+// Generate code to begin a program
+void begin_prog();
+
+// Generate code to end a program
+//  void end_prog();  removed jwj
+void end_prog(int); // added jwj
+
+// Generate code to start a process block
+void begin_proc();
+
+// Generate code to end a process block
+void end_proc(int patch_loc, int varsize);
+ 
+// Write the code to a file.
+int write(char* file, int binary);
+
+// Return the current position.
+int pos();
+
+// Return a reference to the instruction at the specified position.
+WORD* at(int p);
+
+// Return a reference to a float stored at the specified position.
+WORD* f_at(int p);
+
+
+
+#endif
