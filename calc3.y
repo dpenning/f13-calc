@@ -11,7 +11,7 @@ nodeType *opr(int oper, int nops, ...);
 nodeType *con(int value);
 nodeType *conf(float value);
 void freeNode(nodeType *p);
-int ex(nodeType *p);
+int ex(nodeType *p,int build);
 int yylex(void);
 
 void yyerror(char *s);
@@ -46,7 +46,7 @@ program:
     ;
 
 function:
-      function stmt         { ex($2); freeNode($2); }
+      function stmt         { ex($2,1); freeNode($2); }
     | /* NULL */
     ;
 

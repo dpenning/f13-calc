@@ -5,7 +5,12 @@ LEX_OTHER_FILES = lex.yy.c y.tab.c y.tab.h
 CALC_OBJECTS = calc3a.o calc3b.o calc3g.o calc3p.o
 CALC_RUN = f13-calc-a f13-calc-b f13-calc-g f13-calc-p
 
-f13-calc-a : $(OBJECTS) calc3.h calc3a.o calc3b.o calc3g.o calc3p.o
+JUST_PSTACK = calc3p.o -o f13-calc-p
+
+p : $(OBJECTS) calc3p.o
+	$(GPP) $(OBJECTS) $(JUST_PSTACK) 
+
+all : $(OBJECTS) calc3.h calc3a.o calc3b.o calc3g.o calc3p.o
 	$(GPP) $(OBJECTS) calc3a.o -o f13-calc-a
 	$(GPP) $(OBJECTS) calc3b.o -o f13-calc-b
 	$(GPP) $(OBJECTS) calc3g.o -o f13-calc-g

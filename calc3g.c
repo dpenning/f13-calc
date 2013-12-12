@@ -25,7 +25,7 @@ void exNode (nodeType *p, int c, int l, int *ce, int *cm);
 /*****************************************************************************/
 
 /* main entry point of the manipulation of the syntax tree */
-int ex (nodeType *p) {
+int ex (nodeType *p, int build) {
   int rte, rtm;
 
   graphInit ();
