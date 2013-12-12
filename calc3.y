@@ -54,7 +54,7 @@ function:
 stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
-    | decl                           {}
+    | decl ';'                          {}
     | BEG stmt_list END            {}
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
@@ -90,7 +90,7 @@ expr:
     ;
 
 decl:
-      INTD VARIABLE ';' {
+      INTD VARIABLE {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
@@ -98,7 +98,7 @@ decl:
         se->size = 1;
         addSymbol(se, line);
       }
-      | FLOATD VARIABLE ';' {
+      | FLOATD VARIABLE {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = id($2);
         se->name = $$->id.s;
@@ -106,7 +106,7 @@ decl:
         se->size = 1;
         addSymbol(se, line);
       }
-      | INTD VARIABLE '=' expr ';' {
+      | INTD VARIABLE '=' expr {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
@@ -114,7 +114,7 @@ decl:
         se->size = 1;
         addSymbol(se, line);
       }
-      | FLOATD VARIABLE '=' expr ';' {
+      | FLOATD VARIABLE '=' expr {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
