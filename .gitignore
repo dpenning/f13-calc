@@ -7,6 +7,6 @@ y.tab.h
 f13-calc*
 a.out
 
-api
-apd
-apm
+pstack/api
+pstack/apd
+pstack/apm
