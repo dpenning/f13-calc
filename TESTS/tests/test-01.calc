@@ -1,14 +1,26 @@
 /**
- *  Test 1
+ *  Test 0
  *    This test is a basic, but well-rounded, test.
  *    The idea behind this is to thoroughly test
  *    every possible statement in the e-calc language.
  *    (Also testing comments!)
+ *    expected output:
+ *    7 
+ *    7 
+ *    3.142 
+ *   11 
+ *   15 
+ *    1 
+ *    2 
+ *    3.142 
+ *    1 
+ *    3.142  
  */
 int global;
 global = 3;
+
 // First up is some basic begin end assigments with and
-// without declerations!
+// without declarations!
 begin             // Start the block
   print (3 + 4);  // Print 7
 end               // End the block
@@ -25,60 +37,12 @@ end            /* End the block        */
 begin
   int z;
   z = 8;
-  print (z+3);
+  print (z+3); // (11)
   z = z-3;
-  print z*3; // Test stmts within print
-  print z/5;
+  print z*3;   // Test stmts within print (15)
+  print z/5;   // 3
 end
 
-/* Test while and do-while loop */
-begin
-  float k;
-  k=1.234;
-  while ( global <= 10 )
-  {
-    k = k * .98;
-    global = global + 1;
-  }
-  print k;
-  global = 3;
-
-  /* Test the do while loop */
-  k = 1.234;
-  do {
-    k = k *.98;
-    global = global + 1;
-  } while ( global <= 10)
-  print k;
-
-  k = 1.234;
-  /* Test the for loop */
-  for ( global = 3 step 1 to 10 )
-  {
-    k = k * .98;
-  }
-  print k;
-
-  /* test the if statements */
-  if ( k >= 1.0 ) {
-    print k;
-  }
-  else {
-    print global;
-  }
-
-  if ( k <= 1.0 ) {
-    print k;
-  }
-  else {
-    print global; // This will be printed
-  }
-
-  if ( k >= 1.0 )
-  {
-    print global;
-  }
-end // End while loop test
 
 /**
  *  Test nested blocks
@@ -92,12 +56,15 @@ begin
     begin
       int k;
       k = 2;
-      print k;
+      print k;    //2
       begin
-        print i;
+        print i;  //3.142
+       begin
         int i;
         i = 1;
-        print i;
+        print i;  // 1  
+       end
+        print i;  // 3.142
       end
     end
   end
