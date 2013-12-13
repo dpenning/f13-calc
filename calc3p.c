@@ -11,6 +11,8 @@ int ex(nodeType *p,int build) {
   int end_location_loop;
   int if_true_location;
   int if_false_location;
+  int operator_type_1;
+  int operator_type_2;
 
   if (!p) return 0;
 
@@ -65,10 +67,230 @@ int ex(nodeType *p,int build) {
             lbl++;
             return 0;
           default:
-            ex(p->opr.op[0],0);
-            ex(p->opr.op[1],0);
-            lbl++;
-            return 0;
+            switch(p->opr.oper) {
+            case '+':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case '-':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case '*':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case '/':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case '<':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case '>':
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case EQ:
+              operator_type_1 = ex(p->opr.op[0],0);
+              operator_type_2 = ex(p->opr.op[1],0);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  return TYPE_INT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  return TYPE_FLOAT;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case NE:
+              operator_type_1 = ex(p->opr.op[0],1);
+              operator_type_2 = ex(p->opr.op[1],1);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case GE:
+              operator_type_1 = ex(p->opr.op[0],1);
+              operator_type_2 = ex(p->opr.op[1],1);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            case LE:
+              operator_type_1 = ex(p->opr.op[0],1);
+              operator_type_2 = ex(p->opr.op[1],1);
+              if (operator_type_1 == TYPE_INT) {
+                if (operator_type_2 == TYPE_INT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              if (operator_type_1 == TYPE_FLOAT) {
+                if (operator_type_2 == TYPE_FLOAT) {
+                  lbl++;
+                  lbl++;
+                  lbl++;
+                  return 0;
+                }
+                printf("Wrong operator 2\n");
+                return 0;
+              }
+              printf("Not sure what type operator 1 is\n");
+              return 0;
+            }
         }
     }
     return 0;
@@ -160,31 +382,229 @@ int ex(nodeType *p,int build) {
         printf("%04d I_MINUS", lbl++);
         break;
       default:
-        ex(p->opr.op[0],1);
-        ex(p->opr.op[1],1);
         switch(p->opr.oper) {
-        case '+':   printf("%04d I_ADD", lbl++); break;
-        case '-':   printf("%04d I_SUBTRACT", lbl++); break; 
-        case '*':   printf("%04d I_MULTIPLY", lbl++); break;
-        case '/':   printf("%04d I_DIVIDE", lbl++); break;
-        case '<':   printf("%04d I_LESS", lbl++); break;
-        case '>':   printf("%04d I_GREATER", lbl++); break;
-        case EQ:    printf("%04d I_EQUAL", lbl++); break;
+        case '+':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_ADD", lbl++);
+              return TYPE_INT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_ADD", lbl++);
+              return TYPE_FLOAT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case '-':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_SUBTRACT", lbl++);
+              return TYPE_INT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_SUBTRACT", lbl++);
+              return TYPE_FLOAT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case '*':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_MULTIPLY", lbl++);
+              return TYPE_INT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_MULTIPLY", lbl++);
+              return TYPE_FLOAT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case '/':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_DIVIDE", lbl++);
+              return TYPE_INT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_DIVIDE", lbl++);
+              return TYPE_FLOAT;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case '<':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_LESS", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_LESS", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case '>':
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_GREATER", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_GREATER", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
+        case EQ:
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
         case NE:
-          printf("%04d I_EQUAL", lbl++);
-          printf("%04d I_CONSTANT value:0", lbl++);
-          printf("%04d I_EQUAL", lbl++);
-          break;
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_EQUAL", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_EQUAL", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
         case GE:
-          printf("%04d I_LESS", lbl++);
-          printf("%04d I_CONSTANT value:0", lbl++);
-          printf("%04d I_EQUAL", lbl++);
-          break;
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_LESS", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_LESS", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
         case LE:
-          printf("%04d I_GREATER", lbl++);
-          printf("%04d I_CONSTANT value:0", lbl++);
-          printf("%04d I_EQUAL", lbl++);
-          break;
+          operator_type_1 = ex(p->opr.op[0],1);
+          operator_type_2 = ex(p->opr.op[1],1);
+          if (operator_type_1 == TYPE_INT) {
+            if (operator_type_2 == TYPE_INT) {
+              printf("%04d I_GREATER", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          if (operator_type_1 == TYPE_FLOAT) {
+            if (operator_type_2 == TYPE_FLOAT) {
+              printf("%04d R_GREATER", lbl++);
+              printf("%04d I_CONSTANT value:0", lbl++);
+              printf("%04d I_EQUAL", lbl++);
+              return 0;
+            }
+            printf("Wrong operator 2\n");
+            return 0;
+          }
+          printf("Not sure what type operator 1 is\n");
+          return 0;
         }
       }
   }
