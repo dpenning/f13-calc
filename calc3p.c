@@ -26,7 +26,7 @@ int ex(nodeType *p,int build) {
         lbl++;
         return TYPE_FLOAT;
       case typeId:
-        lbl++;
+        lbl += 2;
         return 0;
       case typeOpr:
         switch(p->opr.oper) {
@@ -308,68 +308,78 @@ int ex(nodeType *p,int build) {
       lbl += 2;
       return TYPE_INT;
     case typeFloat:
-      printf("%04d R_Constant value:%f\n", lbl++, p->fl.value); 
+      printf("%04d R_Constant value:%f\n", lbl, p->fl.value); 
+      lbl += 2;
       return TYPE_FLOAT;
     case typeId:
       sym = getSymbolEntry(p->id.s);
       if (sym->type == TYPE_INT) {
         printf("%04d I_Variable lev:%d disp:%d\n"
-             , lbl++
+             , lbl
              , sym->blk_level
              , sym->offset); 
+        lbl += 3;
         return TYPE_INT;
       }
       else {
         printf("%04d R_Variable lev:%d disp:%d\n"
-             , lbl++
+             , lbl
              , sym->blk_level
              , sym->offset); 
+        lbl += 3;
         return TYPE_FLOAT;
       }
     case typeOpr:
       switch(p->opr.oper) {
       case BEG:
+        pushSymbolTable(); // push a new symbol table for scope
         printf("%04d Call level:%d addr:%d\n",lbl,0,lbl + 5);
         lbl += 3;
-        label_save = lbl;
+        label_save = lbl; // jump label
         ex(p->opr.op[0],0);
         printf("%04d Jr by:%d\n",label_save,lbl+5);
         lbl = label_save+2;
-        ex(p->opr.op[0],build);
+        printf("//Doing Something\n");
+        ex(p->opr.op[0],1);
         printf("%04d EndProc\n",lbl++);
+        popSymbolTable(); // pop the last symbol table for scope
         return 0;
       case WHILE:
         start_location_loop = lbl;
         ex(p->opr.op[0],0);
-        lbl++;
+        lbl+=2;
         ex(p->opr.op[1],0);
-        lbl++;
+        lbl+=2;
         end_location_loop = lbl;
         lbl = start_location_loop;
         ex(p->opr.op[0],1);
-        printf("%04d Jmp_if_False %04d\n",lbl++,end_location_loop);
+        printf("%04d Jmp_if_False %04d\n",lbl,end_location_loop);
+        lbl += 2;
         ex(p->opr.op[1],1);
-        printf("%04d Jmp %04d\n",lbl++,start_location_loop);
+        printf("%04d Jmp %04d\n",lbl,start_location_loop);
+        lbl += 2;
         return 0;
       case DO:
         start_location_loop = lbl;
         ex(p->opr.op[0],1);
         ex(p->opr.op[1],1);
-        printf("%04d Jmp_if_True %04d\n",lbl++,start_location_loop);
+        printf("%04d Jmp_if_True %04d\n",lbl,start_location_loop);
+        lbl += 2;
         return 0;
       case REPEAT:
         start_location_loop = lbl;
         ex(p->opr.op[0],1);
         ex(p->opr.op[1],1);
-        printf("%04d Jmp_if_False %04d\n",lbl++,start_location_loop);
+        printf("%04d Jmp_if_False %04d\n",lbl,start_location_loop);
+        lbl += 2;
         return 0;
       case IF:
         start_location_loop = lbl;
         ex(p->opr.op[0],0);
-        lbl++;
+        lbl+=2;
         ex(p->opr.op[1],0);
         if (p->opr.nops > 2) {
-          lbl++;
+          lbl+=2;
           if_false_location = lbl + 1;
           ex(p->opr.op[2],0);
           if_true_location = lbl + 1;
@@ -379,25 +389,49 @@ int ex(nodeType *p,int build) {
         }
         lbl = start_location_loop;
         ex(p->opr.op[0],1);
-        printf("%04d Jmp_if_False %04d\n",lbl++,if_false_location);
+        printf("%04d Jmp_if_False %04d\n",lbl,if_false_location);
+        lbl += 2;
         ex(p->opr.op[1],1);
         if (p->opr.nops > 2) {
-          printf("%04d Jmp %04d\n",lbl++,if_true_location);
+          printf("%04d Jmp %04d\n",lbl,if_true_location);
+          lbl += 2;
           ex(p->opr.op[2],1);
         }
         return 0;
       case PRINT:
         ex(p->opr.op[0],0);
-        printf("%04d I_Write words:1\n", lbl++);
+        printf("%04d I_Write words:1\n", lbl);
+        lbl += 2;
         return 0;
       case '=':
-        ex(p->opr.op[1],1);
-        printf("%04d I_Assign words:%d\n", lbl++, 1);
+        operator_type_1 = ex(p->opr.op[0],1);
+        operator_type_2 = ex(p->opr.op[1],1);
+        if (operator_type_1 == TYPE_INT) {
+          if (operator_type_2 == TYPE_INT) {
+            printf("%04d I_Assign words:%d\n", lbl, 1);
+            lbl += 2;
+            return TYPE_INT;
+          }
+        }
+        if (operator_type_1 == TYPE_FLOAT) {
+          if (operator_type_2 == TYPE_FLOAT) {
+            printf("%04d R_Assign words:%d\n", lbl, 1);
+            lbl += 2;
+            return TYPE_FLOAT;
+          }
+        }
         return 0;
       case UMINUS:
-        ex(p->opr.op[0],1);
-        printf("%04d I_Minus\n", lbl++);
-        break;
+        operator_type_1  = ex(p->opr.op[0],1);
+        if (operator_type_1 == TYPE_INT) {
+          printf("%04d I_Minus\n", lbl++);
+          return TYPE_INT;
+        }
+        if (operator_type_1 == TYPE_FLOAT) {
+          printf("%04d R_Minus\n", lbl++);
+          return TYPE_FLOAT;
+        }
+        return 0;
       default:
         switch(p->opr.oper) {
         case '+':
