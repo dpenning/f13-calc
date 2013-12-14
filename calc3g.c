@@ -74,6 +74,7 @@ void exNode
     case typeFloat: sprintf (word, "fl(%f)", p->fl.value); break;
     case typeOpr:
       switch(p->opr.oper){
+        case BEG:       s = "begin"; break;
         case WHILE:     s = "while"; break;
         case DO:        s = "do"; break;
         case REPEAT:    s = "repeat"; break;

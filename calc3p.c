@@ -72,6 +72,9 @@ int ex(nodeType *p,int build) {
             ex(p->opr.op[0],0);
             lbl++;
             return 0;
+          case ';':
+            ex(p->opr.op[0],0);
+            ex(p->opr.op[1],0);
           default:
             switch(p->opr.oper) {
             case '+':
@@ -332,17 +335,17 @@ int ex(nodeType *p,int build) {
     case typeOpr:
       switch(p->opr.oper) {
       case BEG:
-        pushSymbolTable(); // push a new symbol table for scope
+        //pushSymbolTable(); // push a new symbol table for scope
         printf("%04d Call level:%d addr:%d\n",lbl,0,lbl + 5);
         lbl += 3;
         label_save = lbl; // jump label
         ex(p->opr.op[0],0);
-        printf("%04d Jr by:%d\n",label_save,lbl+5);
+        printf("%04d Jr by:%d\n",label_save,lbl+3);
+        printf("//Number of operations = %d\n",p->opr.nops);
         lbl = label_save+2;
-        printf("//Doing Something\n");
         ex(p->opr.op[0],1);
         printf("%04d EndProc\n",lbl++);
-        popSymbolTable(); // pop the last symbol table for scope
+        //popSymbolTable(); // pop the last symbol table for scope
         return 0;
       case WHILE:
         start_location_loop = lbl;
@@ -432,6 +435,9 @@ int ex(nodeType *p,int build) {
           return TYPE_FLOAT;
         }
         return 0;
+      case ';':
+        ex(p->opr.op[0],1);
+        ex(p->opr.op[1],1);
       default:
         switch(p->opr.oper) {
         case '+':
