@@ -7,6 +7,7 @@ static int lbl;
 
 int ex(nodeType *p,int build) {
   struct symbol_entry *sym;
+  int label_save;
   int start_location_loop;
   int end_location_loop;
   int if_true_location;
@@ -30,7 +31,9 @@ int ex(nodeType *p,int build) {
       case typeOpr:
         switch(p->opr.oper) {
           case BEG:
-            //this is where we do things 
+            lbl += 5;
+            ex(p->opr.op[0],0);
+            lbl++;
             return 0;
           case WHILE:
             ex(p->opr.op[0],0);
@@ -301,7 +304,8 @@ int ex(nodeType *p,int build) {
 
   switch(p->type) {
     case typeCon:
-      printf("%04d I_Constant value:%d\n", lbl++, p->con.value); 
+      printf("%04d I_Constant value:%d\n", lbl, p->con.value); 
+      lbl += 2;
       return TYPE_INT;
     case typeFloat:
       printf("%04d R_Constant value:%f\n", lbl++, p->fl.value); 
@@ -325,8 +329,14 @@ int ex(nodeType *p,int build) {
     case typeOpr:
       switch(p->opr.oper) {
       case BEG:
-        // print out all the thing we need
-        // for the begin scope
+        printf("%04d Call level:%d addr:%d\n",lbl,0,lbl + 5);
+        lbl += 3;
+        label_save = lbl;
+        ex(p->opr.op[0],0);
+        printf("%04d Jr by:%d\n",label_save,lbl+5);
+        lbl = label_save+2;
+        ex(p->opr.op[0],build);
+        printf("%04d EndProc\n",lbl++);
         return 0;
       case WHILE:
         start_location_loop = lbl;
@@ -386,7 +396,7 @@ int ex(nodeType *p,int build) {
         return 0;
       case UMINUS:
         ex(p->opr.op[0],1);
-        printf("%04d I_Minus", lbl++);
+        printf("%04d I_Minus\n", lbl++);
         break;
       default:
         switch(p->opr.oper) {
@@ -395,7 +405,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_ADD", lbl++);
+              printf("%04d I_ADD\n", lbl++);
               return TYPE_INT;
             }
             printf("Wrong operator 2\n");
@@ -403,7 +413,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_ADD", lbl++);
+              printf("%04d R_ADD\n", lbl++);
               return TYPE_FLOAT;
             }
             printf("Wrong operator 2\n");
@@ -416,7 +426,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_SUBTRACT", lbl++);
+              printf("%04d I_SUBTRACT\n", lbl++);
               return TYPE_INT;
             }
             printf("Wrong operator 2\n");
@@ -424,7 +434,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_SUBTRACT", lbl++);
+              printf("%04d R_SUBTRACT\n", lbl++);
               return TYPE_FLOAT;
             }
             printf("Wrong operator 2\n");
@@ -437,7 +447,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_MULTIPLY", lbl++);
+              printf("%04d I_MULTIPLY\n", lbl++);
               return TYPE_INT;
             }
             printf("Wrong operator 2\n");
@@ -445,7 +455,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_MULTIPLY", lbl++);
+              printf("%04d R_MULTIPLY\n", lbl++);
               return TYPE_FLOAT;
             }
             printf("Wrong operator 2\n");
@@ -458,7 +468,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_DIVIDE", lbl++);
+              printf("%04d I_DIVIDE\n", lbl++);
               return TYPE_INT;
             }
             printf("Wrong operator 2\n");
@@ -466,7 +476,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_DIVIDE", lbl++);
+              printf("%04d R_DIVIDE\n", lbl++);
               return TYPE_FLOAT;
             }
             printf("Wrong operator 2\n");
@@ -479,7 +489,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_LESS", lbl++);
+              printf("%04d I_LESS\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -487,7 +497,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_LESS", lbl++);
+              printf("%04d R_LESS\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -500,7 +510,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_GREATER", lbl++);
+              printf("%04d I_GREATER\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -508,7 +518,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_GREATER", lbl++);
+              printf("%04d R_GREATER\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -521,7 +531,7 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -529,7 +539,7 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_EQUAL", lbl++);
+              printf("%04d R_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -542,9 +552,9 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_EQUAL", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -552,9 +562,9 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_EQUAL", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d R_EQUAL\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -567,9 +577,9 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_LESS", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d I_LESS\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -577,9 +587,9 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_LESS", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d R_LESS\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -592,9 +602,9 @@ int ex(nodeType *p,int build) {
           operator_type_2 = ex(p->opr.op[1],1);
           if (operator_type_1 == TYPE_INT) {
             if (operator_type_2 == TYPE_INT) {
-              printf("%04d I_GREATER", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d I_GREATER\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -602,9 +612,9 @@ int ex(nodeType *p,int build) {
           }
           if (operator_type_1 == TYPE_FLOAT) {
             if (operator_type_2 == TYPE_FLOAT) {
-              printf("%04d R_GREATER", lbl++);
-              printf("%04d I_CONSTANT value:0", lbl++);
-              printf("%04d I_EQUAL", lbl++);
+              printf("%04d R_GREATER\n", lbl++);
+              printf("%04d I_CONSTANT value:0\n", lbl++);
+              printf("%04d I_EQUAL\n", lbl++);
               return 0;
             }
             printf("Wrong operator 2\n");
@@ -615,6 +625,5 @@ int ex(nodeType *p,int build) {
         }
       }
   }
-  printf("\n");
   return 0;
 }
