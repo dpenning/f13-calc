@@ -29,6 +29,9 @@ int ex(nodeType *p,int build) {
         return 0;
       case typeOpr:
         switch(p->opr.oper) {
+          case BEG:
+            //this is where we do things 
+            return 0;
           case WHILE:
             ex(p->opr.op[0],0);
             lbl++;
@@ -321,6 +324,10 @@ int ex(nodeType *p,int build) {
       }
     case typeOpr:
       switch(p->opr.oper) {
+      case BEG:
+        // print out all the thing we need
+        // for the begin scope
+        return 0;
       case WHILE:
         start_location_loop = lbl;
         ex(p->opr.op[0],0);
