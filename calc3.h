@@ -1,5 +1,6 @@
 /*Line number for symtable error messages*/
 int line;
+int lbl;
 
 typedef enum { typeCon, typeFloat, typeId, typeOpr } nodeEnum; /* added */
 

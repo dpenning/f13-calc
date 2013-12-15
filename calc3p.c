@@ -3,8 +3,6 @@
 #include "symbol_table.h"
 #include "y.tab.h"
 
-static int lbl;
-
 int ex(nodeType *p,int build) {
   struct symbol_entry *sym;
   int label_save;
