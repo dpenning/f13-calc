@@ -43,7 +43,9 @@ int sym[26];                    /* symbol table */
 %%
 
 program:
-    function                { printf("");
+    function                { 
+                              //program end
+                              printf("%04d EndProg\n",lbl);
                               exit(0); 
                             }
     ;
@@ -51,10 +53,13 @@ program:
 function:
       function stmt         { 
                               //program start
-                              printf("");
+                              if (lbl == 0) {
+                                lbl = 1;
+                                printf("%04d Prog varlen:%d addr:%d\n",lbl,100,4);
+                                lbl += 3;
+                              }
                               ex($2,1); 
                               freeNode($2); 
-                              //
                             }
     | /* NULL */
     ;
@@ -62,7 +67,7 @@ function:
 stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
-    | decl ';'                       { $$ = $1; }
+    | decl ';'                       {}
     | BEG stmt_list END              { $$ = opr(BEG, 1, $2); }
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
@@ -98,25 +103,7 @@ expr:
     ;
 
 decl:
-      INTD VARIABLE {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = id($2);
-        se->name = $$->id.s;
-        se->type = TYPE_INT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-      | FLOATD VARIABLE {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = id($2);
-        se->name = $$->id.s;
-        se->type = TYPE_FLOAT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-      | INTD VARIABLE '=' expr {
+      INTD VARIABLE '=' expr {
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
@@ -129,6 +116,24 @@ decl:
         struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
         $$ = opr('=', 2, id($2), $4);
         se->name = id($2)->id.s;
+        se->type = TYPE_FLOAT;
+        se->size = 1;
+        se->blk_level = getCurrentLevel();
+        addSymbol(se, line);
+      }
+      | INTD VARIABLE {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = id($2);
+        se->name = $$->id.s;
+        se->type = TYPE_INT;
+        se->size = 1;
+        se->blk_level = getCurrentLevel();
+        addSymbol(se, line);
+      }
+      | FLOATD VARIABLE {
+        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
+        $$ = id($2);
+        se->name = $$->id.s;
         se->type = TYPE_FLOAT;
         se->size = 1;
         se->blk_level = getCurrentLevel();

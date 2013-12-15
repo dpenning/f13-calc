@@ -25,7 +25,8 @@ int ex(nodeType *p,int build) {
         return TYPE_FLOAT;
       case typeId:
         lbl += 2;
-        return 0;
+        sym = getSymbolEntry(p->id.s);
+        return sym->type;
       case typeOpr:
         switch(p->opr.oper) {
           case BEG:
@@ -94,7 +95,8 @@ int ex(nodeType *p,int build) {
                 printf("Wrong operator 2\n");
                 return 0;
               }
-              printf("Not sure what type operator 1 is\n");
+              printf("On Add Not sure what type operator 1 is\n");
+              printf("type operator 1 is %d\n",operator_type_1);
               return 0;
             case '-':
               operator_type_1 = ex(p->opr.op[0],0);
@@ -115,7 +117,8 @@ int ex(nodeType *p,int build) {
                 printf("Wrong operator 2\n");
                 return 0;
               }
-              printf("Not sure what type operator 1 is\n");
+              printf("On SUB Not sure what type operator 1 is\n");
+              printf("type operator 1 is %d\n",operator_type_1);
               return 0;
             case '*':
               operator_type_1 = ex(p->opr.op[0],0);
@@ -136,7 +139,8 @@ int ex(nodeType *p,int build) {
                 printf("Wrong operator 2\n");
                 return 0;
               }
-              printf("Not sure what type operator 1 is\n");
+              printf("On Multiply Not sure what type operator 1 is\n");
+              printf("type operator 1 is %d\n",operator_type_1);
               return 0;
             case '/':
               operator_type_1 = ex(p->opr.op[0],0);
@@ -157,7 +161,8 @@ int ex(nodeType *p,int build) {
                 printf("Wrong operator 2\n");
                 return 0;
               }
-              printf("Not sure what type operator 1 is\n");
+              printf("On Divide Not sure what type operator 1 is\n");
+              printf("type operator 1 is %d\n",operator_type_1);
               return 0;
             case '<':
               operator_type_1 = ex(p->opr.op[0],0);
@@ -303,6 +308,7 @@ int ex(nodeType *p,int build) {
     return 0;
   }
 
+
   switch(p->type) {
     case typeCon:
       printf("%04d I_Constant value:%d\n", lbl, p->con.value); 
@@ -337,8 +343,9 @@ int ex(nodeType *p,int build) {
         lbl += 3;
         label_save = lbl; // jump label
         ex(p->opr.op[0],0);
-        printf("%04d Jr by:%d\n",label_save,lbl+3);
+        printf("%04d Jmp %d\n",label_save,lbl+4);
         lbl = label_save+2;
+        printf("%04d Proc varlen:%d addr:%d\n",lbl,100,lbl+3);
         ex(p->opr.op[0],1);
         printf("%04d EndProc\n",lbl++);
         popSymbolTable(); // pop the last symbol table for scope
@@ -398,7 +405,7 @@ int ex(nodeType *p,int build) {
         }
         return 0;
       case PRINT:
-        ex(p->opr.op[0],0);
+        ex(p->opr.op[0],1);
         printf("%04d I_Write words:1\n", lbl);
         lbl += 2;
         return 0;
@@ -455,7 +462,8 @@ int ex(nodeType *p,int build) {
             printf("Wrong operator 2\n");
             return 0;
           }
-          printf("Not sure what type operator 1 is\n");
+          printf("On Add Not sure what type operator 1 is\n");
+          printf("type operator 1 is %d\n",operator_type_1);
           return 0;
         case '-':
           operator_type_1 = ex(p->opr.op[0],1);
@@ -476,7 +484,8 @@ int ex(nodeType *p,int build) {
             printf("Wrong operator 2\n");
             return 0;
           }
-          printf("Not sure what type operator 1 is\n");
+          printf("On Sub Not sure what type operator 1 is\n");
+          printf("type operator 1 is %d\n",operator_type_1);
           return 0;
         case '*':
           operator_type_1 = ex(p->opr.op[0],1);
@@ -497,7 +506,8 @@ int ex(nodeType *p,int build) {
             printf("Wrong operator 2\n");
             return 0;
           }
-          printf("Not sure what type operator 1 is\n");
+          printf("On Multiply Not sure what type operator 1 is\n");
+          printf("type operator 1 is %d\n",operator_type_1);
           return 0;
         case '/':
           operator_type_1 = ex(p->opr.op[0],1);
@@ -518,7 +528,8 @@ int ex(nodeType *p,int build) {
             printf("Wrong operator 2\n");
             return 0;
           }
-          printf("Not sure what type operator 1 is\n");
+          printf("On Divide Not sure what type operator 1 is\n");
+          printf("type operator 1 is %d\n",operator_type_1);
           return 0;
         case '<':
           operator_type_1 = ex(p->opr.op[0],1);

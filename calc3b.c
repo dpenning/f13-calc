@@ -2,8 +2,6 @@
 #include "calc3.h"
 #include "y.tab.h"
 
-static int lbl;
-
 int ex(nodeType *p, int build) {
   int lbl1, lbl2;
 
