@@ -96,6 +96,7 @@ decl:
         se->name = $$->id.s;
         se->type = TYPE_INT;
         se->size = 1;
+        se->blk_level = getCurrentLevel();
         addSymbol(se, line);
       }
       | FLOATD VARIABLE {
@@ -104,6 +105,7 @@ decl:
         se->name = $$->id.s;
         se->type = TYPE_FLOAT;
         se->size = 1;
+        se->blk_level = getCurrentLevel();
         addSymbol(se, line);
       }
       | INTD VARIABLE '=' expr {
@@ -112,6 +114,7 @@ decl:
         se->name = id($2)->id.s;
         se->type = TYPE_INT;
         se->size = 1;
+        se->blk_level = getCurrentLevel();
         addSymbol(se, line);
       }
       | FLOATD VARIABLE '=' expr {
@@ -120,6 +123,7 @@ decl:
         se->name = id($2)->id.s;
         se->type = TYPE_FLOAT;
         se->size = 1;
+        se->blk_level = getCurrentLevel();
         addSymbol(se, line);
       }
 

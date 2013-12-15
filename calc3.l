@@ -22,7 +22,7 @@ void yyerror(char *);
 "until"        { return UNTIL;  }
 "repeat"       { return REPEAT; }
 
-"begin"        {return BEG;}
+"begin"        { pushSymbolTable();return BEG;}
 "end"          {return END;}
 
 [ \t\n]+        ;       /* ignore whitespace */
