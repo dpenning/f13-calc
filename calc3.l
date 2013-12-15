@@ -22,12 +22,8 @@ void yyerror(char *);
 "until"        { return UNTIL;  }
 "repeat"       { return REPEAT; }
 
-"begin"        { pushSymbolTable(); /*beginning of new scope*/
-                 return BEG;
-               }
-"end"          { popSymbolTable(); /*end of scope*/
-                 return END;
-               }
+"begin"        {return BEG;}
+"end"          {return END;}
 
 [ \t\n]+        ;       /* ignore whitespace */
 

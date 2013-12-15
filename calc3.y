@@ -54,7 +54,7 @@ function:
 stmt:
       ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
-    | decl ';'                       {}
+    | decl ';'                       { $$ = $1; }
     | BEG stmt_list END              { $$ = opr(BEG, 1, $2); }
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
