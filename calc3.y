@@ -43,11 +43,19 @@ int sym[26];                    /* symbol table */
 %%
 
 program:
-    function                { exit(0); }
+    function                { printf("");
+                              exit(0); 
+                            }
     ;
 
 function:
-      function stmt         { ex($2,1); freeNode($2); }
+      function stmt         { 
+                              //program start
+                              printf("");
+                              ex($2,1); 
+                              freeNode($2); 
+                              //
+                            }
     | /* NULL */
     ;
 

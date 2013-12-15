@@ -25,7 +25,7 @@ void yyerror(char *);
 "begin"        { pushSymbolTable();return BEG;}
 "end"          {return END;}
 
-[ \t\n]+        ;       /* ignore whitespace */
+[ \t\n]+       {}       /* ignore whitespace */
 
 [a-zA-Z_][a-zA-Z_0-9]*       {
         char *copy;
