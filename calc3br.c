@@ -50,6 +50,7 @@ int ex(nodeType *p,int build) {
             pushSymbolTable();
             lbl += 3;
             lbl += 2;
+            lbl += 3;
             ex(p->opr.op[0],0);
             lbl++;
             popSymbolTable();
@@ -397,6 +398,7 @@ int ex(nodeType *p,int build) {
             printf("%04d Jmp %d\n",label_save,lbl+4);
             lbl = label_save+2;
             printf("%04d Proc varlen:%d addr:%d\n",lbl,100,lbl+3);
+            lbl += 3;
             ex(p->opr.op[0],1);
             printf("%04d EndProc\n",lbl++);
             popSymbolTable(); // pop the last symbol table for scope
