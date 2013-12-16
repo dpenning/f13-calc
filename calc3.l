@@ -8,6 +8,10 @@ void yyerror(char *);
 
 %%
 
+"/*".*"*/" {}
+"//".* {}
+[ \t\n]+       {}
+
 ">="           { return GE;     }
 "<="           { return LE;     }
 "=="           { return EQ;     }
@@ -24,8 +28,6 @@ void yyerror(char *);
 
 "begin"        { pushSymbolTable();return BEG;}
 "end"          {return END;}
-
-[ \t\n]+       {}       /* ignore whitespace */
 
 [a-zA-Z_][a-zA-Z_0-9]*       {
         char *copy;
@@ -46,14 +48,6 @@ void yyerror(char *);
 [0-9]*[.][0-9]* {
         yylval.fValue = atof(yytext);
         return FLOAT;
-}
-
-"//".* {
-
-}
-
-"/*".*"*/" {
-
 }
 
 [-()<>=+/.*{}] {
