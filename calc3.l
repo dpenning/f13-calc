@@ -59,7 +59,9 @@ void yyerror(char *);
         return *yytext;
     }
 
-.               yyerror("Unknown character");
+.               {
+                  printf("%s\n",yytext);
+                  yyerror("Unknown character");}
 %%
 int yywrap(void) {
   return 1;

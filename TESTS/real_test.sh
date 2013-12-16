@@ -4,6 +4,9 @@
 
 for f in tests/*.calc
 do
+	echo "---------------"
+	echo "   $f  "
+	echo "---------------"
 	echo ""
 	echo "NFM Program"
 	echo ""
