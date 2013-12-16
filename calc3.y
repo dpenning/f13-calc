@@ -47,7 +47,7 @@ program:
     function                { 
                               //program end
 
-                              printf("%04d I_EndProg\n",lbl);
+                              printf("%04d EndProg\n",lbl);
                               exit(0); 
                             }
     ;
@@ -59,7 +59,7 @@ function:
                                 //delete the old output file
                                 //start the program
                                 lbl = 1;
-                                printf("%04d I_Prog varlen:%d addr:%d\n",lbl,100,4);
+                                printf("%04d Prog varlen:%d addr:%d\n",lbl,100,4);
                                 lbl += 3;
                               }
                               ex($2,1); 
