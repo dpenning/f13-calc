@@ -1,10 +1,13 @@
 #!/bin/bash
 
+
+
+
 echo ""
 echo "NFM Program"
 echo ""
 
-./calc3p < ptest.calc
+./calc3p < $1
 echo "  --Program--"
 ./pstack/apd calc_out
 echo "  --Program--"
@@ -14,7 +17,7 @@ echo ""
 echo "Our Program"
 echo ""
 
-./mycalc3 < ptest.calc > wow.aa
+./mycalc3 < $1 > wow.aa
 echo "  --Program--"
 more wow.aa
 echo "  --Program--"
