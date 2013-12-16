@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include "calc3.h"
 #include "symbol_table.h"
+#include "pstcode.h"
 
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
@@ -45,17 +46,20 @@ int sym[26];                    /* symbol table */
 program:
     function                { 
                               //program end
-                              printf("%04d EndProg\n",lbl);
+
+                              printf("%04d I_EndProg\n",lbl);
                               exit(0); 
                             }
     ;
 
 function:
       function stmt         { 
-                              //program start
                               if (lbl == 0) {
+                                //program start
+                                //delete the old output file
+                                //start the program
                                 lbl = 1;
-                                printf("%04d Prog varlen:%d addr:%d\n",lbl,100,4);
+                                printf("%04d I_Prog varlen:%d addr:%d\n",lbl,100,4);
                                 lbl += 3;
                               }
                               ex($2,1); 

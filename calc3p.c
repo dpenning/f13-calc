@@ -3,6 +3,8 @@
 #include "symbol_table.h"
 #include "y.tab.h"
 
+static int none_or_value = 0;
+
 int ex(nodeType *p,int build) {
   struct symbol_entry *sym;
   int label_save;
@@ -21,7 +23,7 @@ int ex(nodeType *p,int build) {
         lbl++;
         return TYPE_INT;
       case typeFloat:
-        lbl++;
+        lbl+=2;
         return TYPE_FLOAT;
       case typeId:
         lbl += 2;
@@ -64,6 +66,9 @@ int ex(nodeType *p,int build) {
             lbl++;
             return 0;
           case '=':
+            none_or_value = 0;
+            ex(p->opr.op[0],0);
+            none_or_value = 1;
             ex(p->opr.op[1],0);
             lbl++;
             return 0;
@@ -308,7 +313,6 @@ int ex(nodeType *p,int build) {
     return 0;
   }
 
-
   switch(p->type) {
     case typeCon:
       printf("%04d I_Constant value:%d\n", lbl, p->con.value); 
@@ -319,8 +323,12 @@ int ex(nodeType *p,int build) {
       lbl += 2;
       return TYPE_FLOAT;
     case typeId:
+
       sym = getSymbolEntry(p->id.s);
       if (sym->type == TYPE_INT) {
+        if (none_or_value == 1) {
+          printf("%04d I_Value\n",lbl++);
+        }
         printf("%04d I_Variable lev:%d disp:%d\n"
              , lbl
              , sym->blk_level
@@ -329,6 +337,9 @@ int ex(nodeType *p,int build) {
         return TYPE_INT;
       }
       else {
+        if (none_or_value == 1) {
+          printf("%04d R_Value\n",lbl++);
+        }
         printf("%04d R_Variable lev:%d disp:%d\n"
              , lbl
              , sym->blk_level
@@ -405,7 +416,7 @@ int ex(nodeType *p,int build) {
         }
         return 0;
       case PRINT:
-        ex(p->opr.op[0],1);
+        operator_type_1 = ex(p->opr.op[0],1);
         printf("%04d I_Write words:1\n", lbl);
         lbl += 2;
         return 0;
