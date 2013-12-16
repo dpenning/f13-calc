@@ -395,7 +395,7 @@ int ex(nodeType *p,int build) {
             lbl += 3;
             label_save = lbl; // jump label
             ex(p->opr.op[0],0);
-            printf("%04d Jmp %d\n",label_save,lbl+4);
+            printf("%04d Jmp %d\n",label_save,lbl+6);
             lbl = label_save+2;
             printf("%04d Proc varlen:%d addr:%d\n",lbl,100,lbl+3);
             lbl += 3;
