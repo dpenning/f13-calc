@@ -508,14 +508,14 @@ int ex(nodeType *p,int build) {
                 if_one_print_value = last_if_one_print_value;
                 if (operator_type_1 == TYPE_INT) {
                   if (operator_type_2 == TYPE_INT) {
-                    printf("%04d I_ADD\n", lbl++);
+                    printf("%04d I_Add\n", lbl++);
                     return TYPE_INT;
                   }
                   return 0;
                 }
                 if (operator_type_1 == TYPE_FLOAT) {
                   if (operator_type_2 == TYPE_FLOAT) {
-                    printf("%04d R_ADD\n", lbl++);
+                    printf("%04d R_Add\n", lbl++);
                     return TYPE_FLOAT;
                   }
                   return 0;
