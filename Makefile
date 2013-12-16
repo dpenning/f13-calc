@@ -7,7 +7,7 @@ CALC_RUN = f13-calc-a f13-calc-b f13-calc-g f13-calc-p
 
 JUST_PSTACK = calc3p.o -o f13-calc-p
 
-JUST_BR = calc3br.o -o f13-calc-br
+JUST_BR = calc3br.o -o f13-calc-r
 
 br : $(OBJECTS) calc3br.o
 	$(GPP) $(OBJECTS) $(JUST_BR) 
