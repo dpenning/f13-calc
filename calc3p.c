@@ -331,7 +331,7 @@ int ex(nodeType *p,int build) {
         }
         printf("%04d I_Variable lev:%d disp:%d\n"
              , lbl
-             , sym->blk_level
+             , getCurrentLevel()-(sym->blk_level)
              , sym->offset); 
         lbl += 3;
         return TYPE_INT;
