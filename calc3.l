@@ -9,8 +9,8 @@ int currently_block_commenting = 0;
 
 %%
 [ \t\n]+       {}
-"/*"     {currently_block_commenting = 1;}
-"*/"    {if (currently_block_commenting == 1) currently_block_commenting = 0;}
+"/*"           {currently_block_commenting = 1;}
+"*/"           {if (currently_block_commenting == 1) currently_block_commenting = 0;}
 "//".*         {}
 
 ">="           { if (currently_block_commenting == 0) return GE;     }
