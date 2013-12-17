@@ -143,7 +143,7 @@ addSymbol (symbol_entry * new_entry, int lineno)
 
   if ((*curr_symbol_table).count (new_entry->name) > 0)
   {
-  cerr << "Multple declarations of " << new_entry->name << " near line " << lineno << endl;
+  cerr << "Multiple declarations of " << new_entry->name << " near line " << lineno << endl;
   exit(1);
   }
 

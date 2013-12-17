@@ -26,7 +26,7 @@ void yyerror(char *);
 "until"        { return UNTIL;  }
 "repeat"       { return REPEAT; }
 
-"begin"        { pushSymbolTable();return BEG;}
+"begin"        {return BEG;}
 "end"          {return END;}
 
 [a-zA-Z_][a-zA-Z_0-9]*       {

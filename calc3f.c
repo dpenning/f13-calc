@@ -8,6 +8,7 @@
  */
 int declare_flag = 0;
 int assign_flag = 0;
+int decl_type = 0;
 
 /** scoping function helpers
  * scope variables is variables in scope
@@ -47,7 +48,6 @@ int ex(nodeType *p, int build) {
           lbl += 3; return TYPE_INT;
         }
         if (output_value == 1) {
-          sym = getSymbolEntry(p->id.s);
           lbl += 4; return TYPE_INT;
         }
         return 0;
@@ -74,7 +74,7 @@ int ex(nodeType *p, int build) {
           case LIST:
             if (declare_flag == 1){
               ex(p->opr.op[0],0);
-              ex(p->opr.op[0],0);
+              ex(p->opr.op[1],0);
             }
             return 0;
           case LIST_END:
@@ -168,6 +168,28 @@ int ex(nodeType *p, int build) {
           case ';':
             ex(p->opr.op[0],0);
             ex(p->opr.op[1],0);
+            return 0;
+          case '=':
+            assign_flag = 1;
+            operator_type_1 = ex(p->opr.op[0],0);
+            assign_flag = 0;
+
+            output_value = 1;
+            operator_type_2 = ex(p->opr.op[1],0);
+            output_value = 0;
+
+            if (operator_type_1 == TYPE_INT) {
+              if (operator_type_2 == TYPE_INT) {
+                lbl += 2;
+                return TYPE_INT;
+              }
+            }
+            if (operator_type_1 == TYPE_FLOAT) {
+              if (operator_type_2 == TYPE_FLOAT) {
+                lbl += 2;
+                return TYPE_FLOAT;
+              }
+            }
             return 0;
           case '+':
             last_id_output_value = output_value;
@@ -399,6 +421,7 @@ int ex(nodeType *p, int build) {
           //add the symbol to the symbol table
           sym = malloc(sizeof(struct symbol_entry));
           sym->name = p->id.s;
+          sym->type = decl_type;
           sym->size = 1;
           sym->blk_level = getCurrentLevel();
           addSymbol(sym, line);
@@ -454,7 +477,6 @@ int ex(nodeType *p, int build) {
             ex(p->opr.op[0],0);
             no_inner_scopes = 0;
             lbl = 1;
-            //print function
             printf("%04d Prog varlen:%d addr:%d\n",lbl,scope_variables,4);
             lbl += 3;
             //reset variables
@@ -474,6 +496,7 @@ int ex(nodeType *p, int build) {
             //we dont actually need to print anything from this
             //we just need to turn on declarations
             declare_flag = 1;
+            decl_type = TYPE_INT;
             ex(p->opr.op[0],1);
             declare_flag = 0;
             return 0;
@@ -481,12 +504,13 @@ int ex(nodeType *p, int build) {
             //we dont actually need to print anything from this
             //we just need to turn on declarations
             declare_flag = 1;
+            decl_type = TYPE_FLOAT;
             ex(p->opr.op[0],1);
             declare_flag = 0;
             return 0;
           case LIST:
             if (declare_flag == 1){
-              ex(p->opr.op[0],1);
+              ex(p->opr.op[1],1);
               ex(p->opr.op[0],1);
             }
             return 0;
@@ -498,6 +522,7 @@ int ex(nodeType *p, int build) {
           case INT_ASSIGN:
             declare_flag = 1;
             assign_flag = 1;
+            decl_type = TYPE_INT;
             ex(p->opr.op[0],1);
             assign_flag = 0;
             declare_flag = 0;
@@ -509,6 +534,7 @@ int ex(nodeType *p, int build) {
             return 0;
           case FLOAT_ASSIGN:
             declare_flag = 1;
+            decl_type = TYPE_FLOAT;
             ex(p->opr.op[0],1);
             declare_flag = 0;
             operator_type_1 = ex(p->opr.op[1],1);
@@ -621,6 +647,30 @@ int ex(nodeType *p, int build) {
           case ';':
             ex(p->opr.op[0],1);
             ex(p->opr.op[1],1);
+            return 0;
+          case '=':
+            assign_flag = 1;
+            operator_type_1 = ex(p->opr.op[0],1);
+            assign_flag = 0;
+
+            output_value = 1;
+            operator_type_2 = ex(p->opr.op[1],1);
+            output_value = 0;
+
+            if (operator_type_1 == TYPE_INT) {
+              if (operator_type_2 == TYPE_INT) {
+                printf("%04d I_Assign words:%d\n", lbl, 1);
+                lbl += 2;
+                return TYPE_INT;
+              }
+            }
+            if (operator_type_1 == TYPE_FLOAT) {
+              if (operator_type_2 == TYPE_FLOAT) {
+                printf("%04d R_Assign words:%d\n", lbl, 1);
+                lbl += 2;
+                return TYPE_FLOAT;
+              }
+            }
             return 0;
           case '+':
             last_id_output_value = output_value;
