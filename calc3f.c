@@ -41,14 +41,15 @@ int ex(nodeType *p, int build) {
         lbl += 2;
         return TYPE_FLOAT;
       case typeId:
+
         if (declare_flag == 1) {
           scope_variables += 1;
         }
         if (assign_flag == 1) {
-          lbl += 3; return TYPE_INT;
+          lbl += 3; return decl_type;
         }
         if (output_value == 1) {
-          lbl += 4; return TYPE_INT;
+          lbl += 4; return decl_type;
         }
         return 0;
       case typeOpr:
@@ -63,6 +64,7 @@ int ex(nodeType *p, int build) {
             return 0;
           case INT_DECL:
             declare_flag = 1;
+            decl_type = TYPE_INT;
             ex(p->opr.op[0],0);
             declare_flag = 0;
             return 0;
@@ -177,16 +179,15 @@ int ex(nodeType *p, int build) {
             output_value = 1;
             operator_type_2 = ex(p->opr.op[1],0);
             output_value = 0;
-
+            
+            lbl += 2;
             if (operator_type_1 == TYPE_INT) {
               if (operator_type_2 == TYPE_INT) {
-                lbl += 2;
                 return TYPE_INT;
               }
             }
             if (operator_type_1 == TYPE_FLOAT) {
               if (operator_type_2 == TYPE_FLOAT) {
-                lbl += 2;
                 return TYPE_FLOAT;
               }
             }
@@ -534,8 +535,10 @@ int ex(nodeType *p, int build) {
             return 0;
           case FLOAT_ASSIGN:
             declare_flag = 1;
+            assign_flag = 1;
             decl_type = TYPE_FLOAT;
             ex(p->opr.op[0],1);
+            assign_flag = 0;
             declare_flag = 0;
             operator_type_1 = ex(p->opr.op[1],1);
             if (operator_type_1 == TYPE_FLOAT) {
