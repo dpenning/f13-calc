@@ -3,6 +3,8 @@
 
 
 count = 0
+right_count = 0
+wrong_count = 0
 for f in tests/*.calc
 do
 	count=`expr $count + 1`
@@ -30,6 +32,7 @@ do
 	diff_out=$(diff nm_output my_output) # Check the compile error diffs
 	if [ -z "$diff_out" ]; then
 		echo -e "--> \033[1;32mSuccess!\033[0m"
+		right_count=`expr $right_count + 1`
 	else
 		echo -e "--> \033[1;31mError :[\033[0m"
 		echo ""
@@ -44,7 +47,10 @@ do
 		echo "  --Program--"
 		cat wow.aa
 		echo "  --program--"
+		wrong_count=`expr $wrong_count + 1`
 	fi
 	rm wow.aa
 	rm wow.apm
 done
+echo "right:$right_count"
+echo "wrong:$wrong_count"
