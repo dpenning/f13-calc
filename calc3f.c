@@ -571,9 +571,10 @@ int ex(nodeType *p, int build) {
             return 0;
           case PRINT:
             output_value = 1;
-            ex(p->opr.op[0],1);
+            operator_type_1 = ex(p->opr.op[0],1);
             output_value = 0;
-            printf("%04d I_Write words:1\n", lbl);
+            if (operator_type_1 == TYPE_INT) {printf("%04d I_Write words:1\n", lbl);}
+            if (operator_type_1 == TYPE_FLOAT) {printf("%04d R_Write words:1\n", lbl);}
             lbl += 2;
             return 0;
           case WHILE:
