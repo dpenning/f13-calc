@@ -667,7 +667,7 @@ int ex(nodeType *p, int build) {
             }
             if (operator_type_1 == TYPE_FLOAT) {
               if (operator_type_2 == TYPE_FLOAT) {
-                printf("%04d R_Assign words:0.000000\n", lbl, 1);
+                printf("%04d R_Assign words:%d\n", lbl, 1);
                 lbl += 2;
                 return TYPE_FLOAT;
               }
