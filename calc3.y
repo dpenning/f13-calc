@@ -8,7 +8,7 @@
 
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
- nodeType *id(char* s);
+nodeType *id(char* s);
 nodeType *con(int value);
 nodeType *conf(float value);
 void freeNode(nodeType *p);
@@ -31,6 +31,8 @@ int sym[26];                    /* symbol table */
 %token <sIndex> VARIABLE
 %token WHILE IF PRINT DO UNTIL REPEAT
 %token INTD FLOATD BEG END
+%token PROG_BEGIN FUNC INT_DECL FLOAT_DECL 
+%token LIST LIST_END INT_ASSIGN FLOAT_ASSIGN
 %nonassoc IFX
 %nonassoc ELSE
 
@@ -39,39 +41,36 @@ int sym[26];                    /* symbol table */
 %left '*' '/'
 %nonassoc UMINUS
 
-%type <nPtr> stmt expr stmt_list decl
+%type <nPtr> function stmt_list stmt decl
+%type <nPtr> variable_list assign expr 
+
 
 %%
-
-program:
-    function                { 
-                              //program end
-
-                              printf("%04d EndProg\n",lbl);
-                              exit(0); 
-                            }
+program: 
+    function               {ex(opr( PROG_BEGIN, 1, $1),1); exit(0);};
+    | /* Null*/
     ;
-
 function:
-      function stmt         { 
-                              if (lbl == 0) {
-                                //program start
-                                //delete the old output file
-                                //start the program
-                                lbl = 1;
-                                printf("%04d Prog varlen:%d addr:%d\n",lbl,100,4);
-                                lbl += 3;
-                              }
-                              ex($2,1); 
-                              freeNode($2); 
-                            }
-    | /* NULL */
+    function stmt               { $$ = opr( FUNC, 2, $1, $2);}
+    | stmt                      { $$ = $1; }
     ;
-
+stmt_list:
+    stmt                        { $$ = $1; }
+    | stmt_list stmt              { $$ = opr(';', 2, $1, $2); };
+decl:
+    INTD variable_list            { $$ = opr(INT_DECL, 1, $2); }
+    | FLOATD variable_list          { $$ = opr(FLOAT_DECL, 1, $2); };
+variable_list:
+    variable_list ',' VARIABLE    { $$ = opr(LIST , 2, id($3), $1); }
+    | VARIABLE                    { $$ = opr(LIST_END , 1, id($1)); };
+assign:
+    INTD VARIABLE '=' expr { $$ = opr(INT_ASSIGN , 2, id($2), $4); }
+    | FLOATD VARIABLE '=' expr { $$ = opr(FLOAT_ASSIGN , 2, id($2), $4); };
 stmt:
-      ';'                            { $$ = opr(';', 2, NULL, NULL); }
+    ';'                            { $$ = opr(';', 2, NULL, NULL); }
     | expr ';'                       { $$ = $1; }
-    | decl ';'                       {}
+    | decl ';'                       { $$ = $1; }
+    | assign ';'                     { $$ = $1; }
     | BEG stmt_list END              { $$ = opr(BEG, 1, $2); }
     | PRINT expr ';'                 { $$ = opr(PRINT, 1, $2); }
     | VARIABLE '=' expr ';'          { $$ = opr('=', 2, id($1), $3); }
@@ -80,16 +79,9 @@ stmt:
     | REPEAT '{' stmt '}' UNTIL '(' expr ')' ';' { $$ = opr(REPEAT, 2, $3, $7); }
     | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, 2, $3, $5); }
     | IF '(' expr ')' stmt ELSE stmt { $$ = opr(IF, 3, $3, $5, $7); }
-    | '{' stmt_list '}'              { $$ = $2; }
-    ;
-
-stmt_list:
-      stmt                  { $$ = $1; }
-    | stmt_list stmt        { $$ = opr(';', 2, $1, $2); }
-    ;
-
+    | '{' stmt_list '}'              { $$ = $2; };
 expr:
-      INTEGER               { $$ = con($1); }
+    INTEGER                 { $$ = con($1); }
     | FLOAT                 { $$ = conf($1); }
     | VARIABLE              { $$ = id($1); }
     | expr '<' expr         { $$ = opr('<', 2, $1, $3); }
@@ -103,47 +95,7 @@ expr:
     | expr GE expr          { $$ = opr(GE, 2, $1, $3); }
     | expr LE expr          { $$ = opr(LE, 2, $1, $3); }
     | expr NE expr          { $$ = opr(NE, 2, $1, $3); }
-    | expr EQ expr          { $$ = opr(EQ, 2, $1, $3); }
-    ;
-
-decl:
-      INTD VARIABLE '=' expr {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = opr('=', 2, id($2), $4);
-        se->name = id($2)->id.s;
-        se->type = TYPE_INT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-      | FLOATD VARIABLE '=' expr {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = opr('=', 2, id($2), $4);
-        se->name = id($2)->id.s;
-        se->type = TYPE_FLOAT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-      | INTD VARIABLE {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = id($2);
-        se->name = $$->id.s;
-        se->type = TYPE_INT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-      | FLOATD VARIABLE {
-        struct symbol_entry* se = malloc(sizeof(struct symbol_entry));
-        $$ = id($2);
-        se->name = $$->id.s;
-        se->type = TYPE_FLOAT;
-        se->size = 1;
-        se->blk_level = getCurrentLevel();
-        addSymbol(se, line);
-      }
-
+    | expr EQ expr          { $$ = opr(EQ, 2, $1, $3); };
 
 %%
 
@@ -193,7 +145,6 @@ nodeType *id(char* s) {
   /* copy information */
   p->type = typeId;
   p->id.s = s;
-
   return p;
 }
 
@@ -241,3 +192,4 @@ int main(void) {
   yyparse();
   return 0;
 }
+

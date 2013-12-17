@@ -74,6 +74,14 @@ void exNode
     case typeFloat: sprintf (word, "fl(%f)", p->fl.value); break;
     case typeOpr:
       switch(p->opr.oper){
+        case PROG_BEGIN:s = "proc"; break;
+        case FUNC:      s = "func"; break;
+        case INT_DECL:  s = "int decl"; break;
+        case FLOAT_DECL:s = "float decl"; break;
+        case LIST:      s = "list"; break;
+        case LIST_END:  s = "list_end"; break;
+        case INT_ASSIGN:s = "int assign"; break;
+        case FLOAT_ASSIGN:s = "float assign"; break;
         case BEG:       s = "begin"; break;
         case WHILE:     s = "while"; break;
         case DO:        s = "do"; break;
