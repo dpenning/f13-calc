@@ -528,7 +528,7 @@ int ex(nodeType *p, int build) {
             declare_flag = 0;
             operator_type_1 = ex(p->opr.op[1],1);
             if (operator_type_1 == TYPE_INT) {
-              printf("%04d I_Assign words:%d\n", lbl, 1);
+              printf("%04d I_Assign  words:%d\n", lbl, 1);
               lbl += 2;
             }else{yyerror("Bad Assignment on line %d",line);}
             return 0;
@@ -539,7 +539,7 @@ int ex(nodeType *p, int build) {
             declare_flag = 0;
             operator_type_1 = ex(p->opr.op[1],1);
             if (operator_type_1 == TYPE_FLOAT) {
-              printf("%04d I_Assign words:%d\n", lbl, 1);
+              printf("%04d R_Assign  words:%d\n", lbl, 1);
               lbl += 2;
             }else{yyerror("Bad Assignment on line %d",line);}
             return 0;

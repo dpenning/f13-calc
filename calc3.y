@@ -188,6 +188,7 @@ void yyerror(char *s) {
 
 int main(void) {
   line = 1;
+  pushSymbolTable();
   yyparse();
   return 0;
 }
