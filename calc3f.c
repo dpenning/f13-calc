@@ -431,7 +431,7 @@ int ex(nodeType *p, int build) {
           if (sym->type == TYPE_INT) {
             printf("%04d I_Variable lev:%d disp:%d\n"
              , lbl
-             , sym->blk_level
+             , getCurrentLevel()-(sym->blk_level)
              , sym->offset); 
             lbl += 3;
             return TYPE_INT;
@@ -439,7 +439,7 @@ int ex(nodeType *p, int build) {
           if (sym->type == TYPE_FLOAT) {
             printf("%04d R_Variable lev:%d disp:%d\n"
              , lbl
-             , sym->blk_level
+             , getCurrentLevel()-(sym->blk_level)
              , sym->offset); 
             lbl += 3;
             return TYPE_FLOAT;
@@ -450,7 +450,7 @@ int ex(nodeType *p, int build) {
           if (sym->type == TYPE_INT) {
             printf("%04d I_Variable lev:%d disp:%d\n"
              , lbl
-             , sym->blk_level
+             , getCurrentLevel()-(sym->blk_level)
              , sym->offset); 
             lbl += 3;
             printf("%04d I_Value\n",lbl++);
@@ -459,7 +459,7 @@ int ex(nodeType *p, int build) {
           if (sym->type == TYPE_FLOAT) {
             printf("%04d R_Variable lev:%d disp:%d\n"
              , lbl
-             , sym->blk_level
+             , getCurrentLevel()-(sym->blk_level)
              , sym->offset); 
             lbl += 3;
             printf("%04d R_Value\n",lbl++);
