@@ -9,6 +9,7 @@ JUST_BR = calc3br.o -o f13-calc-r
 
 f : $(OBJECTS) calc3f.o
 	$(GPP) $(OBJECTS) calc3f.o -o f13-calc-f
+	cp f13-calc-f TESTS/mycalc3
 
 br : $(OBJECTS) calc3br.o
 	$(GPP) $(OBJECTS) $(JUST_BR)
