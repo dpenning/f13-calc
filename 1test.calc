@@ -1,6 +1,0 @@
-/* wow this should work too 
-*/
-
-int global;
-global = 3;
-

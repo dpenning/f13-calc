@@ -1,5 +1,0 @@
-int x;
-int y = 1;
-float z = 2;
-print y;
-print z;

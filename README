@@ -1,12 +1,30 @@
 CS 441 Compilers
-Nov 25, 2013
+Dec 17, 2013
 Milestone 1
 
 Michael Roup and David Pennington
 "Hall & Oates"
 
 To build just run make:
+This will build the f13-calc-f file from calc3f that is required for the testing of the final program. It will also put a copy in the TESTS directory called mycalc3.please test with 
 
-$ make
+Our program is very ...interesting in that it runs through the assembler to create the input for the program. This means that we needed to rebuild the test script around our program. Therefore, when you test our script, you should use copy_test.sh. This file will run through all tests and print out the number of passed test cases vs the number of failed test cases. Keep in mind that we pass most all of the test cases that do not include FLOATS because there is an interesting way of using the "R_Assign words:0.00000" which creates code that can not be replaced unless we fix the binary after the assembler is through with its work.
 
-This outputs the program f13-calc
+Our group as well as others did not know what pstcode.cc/h were until this week. Therefore we did not get an assembler built into our compiler.
+
+So here are a rundown of the files that are useful to you, the rest is junk.
+- pstack/ - this is the file that includes the pstack stuff
+- TESTS/  - this is your tests suite, inside it you will find
+	- test.sh - your test file
+	- quick_test.sh - a program that I wrote for quick testing
+	- ptest.calc - a test program for the compiler
+	- copy-test.sh - the tester that should be used for our program, this one chains the assembler to our compiler and tests the output against the other one's
+- calc3.l/y/h
+- ptscode.c/h
+- y.tab.c/h
+- calc3f.c - This is the important calc3 file, calc3p was an old attempt that I 'threw out' as well as calc3br
+
+
+So what is special about our compiler? We did things in very different ways, We did not build linked lists to make lists of instructions, instead we printed commands out to stdout, and then piped that into the assembler. This led to a lot of interesting problems like guessing jmp locations. We got around these problems by implementing a prebuild system into ex, whenever the build flag we set to off then we would run through a seperate set of instructions which would do our calculations for us. This helped us with finding the end of a loop, finding the jmp points for if statements, and finding the number of variables in a scope.
+
+Also we have a very interesting parsing method, if you run "make all" and look at the graph from f13-calc-g < "prog name", then you can see exactly how we laid out our pattern matching to allow for easy scoping.
